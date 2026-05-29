@@ -27,7 +27,8 @@ export function CTA() {
     const raw = (vh - rect.top) / (vh + rect.height);
     const p = Math.max(0, Math.min(1, raw));
     setProgress(p);
-    setMaxRadius(Math.min(700, Math.max(380, window.innerWidth * 0.42)));
+    const vw = window.innerWidth;
+    setMaxRadius(vw < 768 ? Math.min(280, Math.max(180, vw * 0.5)) : Math.min(700, Math.max(380, vw * 0.42)));
 
     // Sound: trigger swoosh at key expansion milestones as photos spread
     const bucket = Math.floor(p * 5);
@@ -72,8 +73,8 @@ export function CTA() {
       ref={sectionRef}
       className="relative overflow-hidden bg-white pt-40 pb-24 dark:bg-[#0a0a0a] md:pt-60 md:pb-32"
     >
-      {/* Orbit container — center of section */}
-      <div className="pointer-events-none absolute inset-0 hidden md:block">
+      {/* Orbit container — all screen sizes */}
+      <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           {photos.map((photo, i) => {
             const baseAngle = (i / photos.length) * 360;
@@ -94,7 +95,7 @@ export function CTA() {
                   willChange: 'transform, opacity',
                 }}
               >
-                <div className="h-44 w-32 rounded-lg bg-white p-2 shadow-xl transition-shadow duration-300 hover:shadow-2xl dark:bg-[#1a1a1a] md:h-52 md:w-40">
+                <div className="h-36 w-24 rounded-lg bg-white p-1.5 shadow-xl dark:bg-[#1a1a1a] sm:h-44 sm:w-32 sm:p-2 md:h-52 md:w-40">
                   <div className="h-full w-full overflow-hidden rounded bg-[var(--gray-100)]">
                     <img
                       src={photo.src}
@@ -135,20 +136,6 @@ export function CTA() {
         </div>
       </div>
 
-      {/* Mobile fallback — static grid, no orbit */}
-      <div className="mt-16 grid grid-cols-3 gap-4 px-6 md:hidden">
-        {photos.map((photo, i) => (
-          <div
-            key={i}
-            className="rounded-lg bg-white p-1.5 shadow-lg dark:bg-[#1a1a1a]"
-            style={{ transform: `rotate(${photo.tilt}deg)` }}
-          >
-            <div className="aspect-[3/4] overflow-hidden rounded bg-[var(--gray-100)]">
-              <img src={photo.src} alt="" className="h-full w-full rounded object-cover object-top" />
-            </div>
-          </div>
-        ))}
-      </div>
     </section>
   );
 }
