@@ -1,4 +1,4 @@
-import { ArrowUp, Heart } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 import { TextRepel } from '@/components/ui/text-repel';
 
 function InstagramIcon({ className }: { className?: string }) {
@@ -78,8 +78,8 @@ export function Footer() {
             <h3 className="font-galderglynn text-lg font-semibold tracking-[-0.05em] text-[var(--black)]">
               <TextRepel text="mídias por bianca" radius={80} strength={25} stiffness={200} damping={16} mass={0.3} />
             </h3>
-            <div className="mt-3 max-w-xs text-sm leading-relaxed text-[var(--gray-500)]">
-              <TextRepel text="Transformando a presença digital de marcas com estratégia, criatividade e conteúdo autêntico." radius={60} strength={15} stiffness={200} damping={16} mass={0.3} />
+            <div className="mt-3 max-w-xs text-sm leading-relaxed text-[var(--gray-500)] text-left">
+              Transformando a presença digital de marcas com estratégia, criatividade e conteúdo autêntico.
             </div>
           </div>
 
@@ -137,8 +137,8 @@ export function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-[var(--gray-100)]">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
-          <p className="flex items-center gap-1 text-xs text-[var(--gray-400)]">
-            Feito com <Heart className="h-3 w-3 fill-[var(--coral)] text-[var(--coral)]" /> por Bianca
+          <p className="flex items-center gap-1.5 text-xs text-[var(--gray-400)]">
+            Feito por <span className="font-medium text-[var(--gray-500)]">IS Estúdio de Criação</span>
           </p>
           <button
             onClick={scrollToTop}
