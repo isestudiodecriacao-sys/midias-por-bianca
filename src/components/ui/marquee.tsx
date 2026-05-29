@@ -23,9 +23,18 @@ export function Marquee({
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
-    // Calculate duration based on content width and speed
-    const contentWidth = el.scrollWidth / 2; // half because we duplicate
-    setDuration(contentWidth / speed);
+
+    const calcDuration = () => {
+      const contentWidth = el.scrollWidth / 2;
+      const vw = window.innerWidth;
+      // Slow down on mobile so perceived speed stays comfortable
+      const mobileMultiplier = vw < 768 ? 0.45 : vw < 1024 ? 0.65 : 1;
+      setDuration(contentWidth / (speed * mobileMultiplier));
+    };
+
+    calcDuration();
+    window.addEventListener('resize', calcDuration);
+    return () => window.removeEventListener('resize', calcDuration);
   }, [speed]);
 
   return (
