@@ -8,7 +8,7 @@ function getCtx() {
   return ctx;
 }
 
-type SoundType = 'shutter' | 'focus' | 'filmAdvance' | 'tick' | 'toggle' | 'nav' | 'swoosh' | 'dial';
+type SoundType = 'shutter' | 'focus' | 'filmAdvance' | 'tick' | 'toggle' | 'nav' | 'swoosh' | 'dial' | 'notification';
 
 function play(type: SoundType, volume = 0.08) {
   const ac = getCtx();
@@ -190,6 +190,45 @@ function play(type: SoundType, volume = 0.08) {
     noiseGain.connect(ac.destination);
     noise.start(now);
     noise.stop(now + duration);
+  }
+
+  if (type === 'notification') {
+    // Phone-like notification chime — two ascending tones
+    const g1 = ac.createGain();
+    g1.connect(ac.destination);
+    const o1 = ac.createOscillator();
+    o1.type = 'sine';
+    o1.frequency.setValueAtTime(830, now);
+    g1.gain.setValueAtTime(volume * 1.2, now);
+    g1.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+    o1.connect(g1);
+    o1.start(now);
+    o1.stop(now + 0.18);
+
+    const g2 = ac.createGain();
+    g2.connect(ac.destination);
+    const o2 = ac.createOscillator();
+    o2.type = 'sine';
+    o2.frequency.setValueAtTime(1050, now + 0.12);
+    g2.gain.setValueAtTime(0.001, now);
+    g2.gain.linearRampToValueAtTime(volume * 1.4, now + 0.13);
+    g2.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    o2.connect(g2);
+    o2.start(now + 0.12);
+    o2.stop(now + 0.35);
+
+    // Subtle harmonic shimmer
+    const g3 = ac.createGain();
+    g3.connect(ac.destination);
+    const o3 = ac.createOscillator();
+    o3.type = 'triangle';
+    o3.frequency.setValueAtTime(1660, now + 0.12);
+    g3.gain.setValueAtTime(0.001, now);
+    g3.gain.linearRampToValueAtTime(volume * 0.3, now + 0.14);
+    g3.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+    o3.connect(g3);
+    o3.start(now + 0.12);
+    o3.stop(now + 0.4);
   }
 
   if (type === 'dial') {

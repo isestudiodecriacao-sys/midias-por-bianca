@@ -30,3 +30,5 @@ bundle.html
 *.njsproj
 *.sln
 *.sw?
+
+.vercel

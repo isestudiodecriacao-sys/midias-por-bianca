@@ -1,7 +1,7 @@
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { TrendingUp, Users, Zap, Heart } from 'lucide-react';
-import { useCounterSound } from '@/hooks/useSoundEffect';
+
 import { TextRepel } from '@/components/ui/text-repel';
 
 // ── Count-up hook ──
@@ -92,7 +92,7 @@ const stats = [
 
 export function Benefits() {
   const { ref, isVisible } = useScrollAnimation();
-  useCounterSound(isVisible, 5000);
+
   const [heroBlur, setHeroBlur] = useState(false);
   const [cardBlurs, setCardBlurs] = useState<boolean[]>([false, false, false, false]);
 

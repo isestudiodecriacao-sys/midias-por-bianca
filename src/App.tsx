@@ -16,6 +16,7 @@ import { FAQ } from '@/components/FAQ';
 import { CTA } from '@/components/CTA';
 import { Footer } from '@/components/Footer';
 import { NoiseTexture } from '@/components/ui/noise-texture';
+import { WhatsAppNotification } from '@/components/WhatsAppNotification';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         size="sm"
         position="bottom"
       />
+      <WhatsAppNotification />
       <Header />
       <main>
         <Hero />

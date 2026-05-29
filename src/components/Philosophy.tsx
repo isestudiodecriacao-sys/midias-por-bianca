@@ -1,4 +1,5 @@
 import { useRef, useEffect, useCallback } from 'react';
+import { playSoundThrottled } from '@/hooks/useSoundEffect';
 import {
   Camera,
   Heart,
@@ -11,7 +12,7 @@ import {
   Hash,
   Sparkles,
 } from 'lucide-react';
-import { playSoundThrottled } from '@/hooks/useSoundEffect';
+
 
 const icons = [
   { Icon: Camera, x: 8, y: 12, size: 28, speed: 0.6, rotate: -15, opacity: 0.12 },
@@ -72,12 +73,10 @@ export function Philosophy() {
     content.style.opacity = `${opacity}`;
     content.style.filter = `blur(${blur}px)`;
 
-    // Shutter sound when text reaches full size (crossing 0.45 threshold going up)
     if (prevProgress.current < 0.45 && progress >= 0.45 && !shutterFired.current) {
       shutterFired.current = true;
       playSoundThrottled('swoosh', 0.10, 500);
     }
-    // Reset so it fires again on next scroll-through
     if (progress < 0.3 || progress > 0.7) {
       shutterFired.current = false;
     }
