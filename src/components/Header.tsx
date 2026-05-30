@@ -15,9 +15,12 @@ export function Header() {
       const y = window.scrollY;
       setScrolled(y > 50);
 
-      // Hide on scroll down, show on scroll up (only after passing hero area)
+      // Hide on scroll down, show only on active scroll up
+      const delta = y - lastScrollY.current;
       if (y > 100) {
-        setHidden(y > lastScrollY.current && y - lastScrollY.current > 5);
+        if (delta > 5) setHidden(true);
+        else if (delta < -5) setHidden(false);
+        // delta between -5 and 5 = user stopped scrolling, keep current state
       } else {
         setHidden(false);
       }
