@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { playSoundThrottled } from '@/hooks/useSoundEffect';
+
 import { TextRepel } from '@/components/ui/text-repel';
 
 const photos = [
@@ -16,7 +16,7 @@ export function CTA() {
   const rafRef = useRef<number>(0);
   const [progress, setProgress] = useState(0);
   const [maxRadius, setMaxRadius] = useState(350);
-  const prevExpansionBucket = useRef(-1);
+
 
   const update = useCallback(() => {
     const el = sectionRef.current;
@@ -30,12 +30,6 @@ export function CTA() {
     const vw = window.innerWidth;
     setMaxRadius(vw < 768 ? Math.min(280, Math.max(180, vw * 0.5)) : Math.min(700, Math.max(380, vw * 0.42)));
 
-    const bucket = Math.floor(p * 5);
-    if (bucket !== prevExpansionBucket.current && bucket > 0 && bucket < 5) {
-      playSoundThrottled('swoosh', 0.08, 500);
-      prevExpansionBucket.current = bucket;
-    }
-    if (p < 0.05) prevExpansionBucket.current = -1;
   }, []);
 
   useEffect(() => {
