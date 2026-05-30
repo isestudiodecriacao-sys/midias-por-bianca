@@ -266,6 +266,10 @@ html.lenis {
   animation: cylinder-spin 24s linear infinite;
 }
 
+.cylinder-spin:hover {
+  animation-play-state: paused;
+}
+
 /* Delay utilities */
 .delay-100 { animation-delay: 0.1s; }
 .delay-200 { animation-delay: 0.2s; }

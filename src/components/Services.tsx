@@ -58,32 +58,36 @@ const CARD_COUNT = services.length;
 const ANGLE_STEP = 360 / CARD_COUNT;
 const RADIUS = 280;
 
-function CylinderCard({ service }: { service: (typeof services)[0] }) {
+function CylinderCard({ service, disableTilt = false }: { service: (typeof services)[0]; disableTilt?: boolean }) {
   const innerRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (disableTilt) return;
     const el = innerRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    el.style.transition = 'none';
-    el.style.transform = `scale(1.12) rotateX(${-y * 12}deg) rotateY(${x * 12}deg)`;
-  }, []);
+    el.style.transition = 'transform 0.15s ease-out';
+    el.style.transform = `scale(1.04) rotateX(${-y * 8}deg) rotateY(${x * 8}deg)`;
+  }, [disableTilt]);
 
   const handleMouseLeave = useCallback(() => {
+    if (disableTilt) return;
     const el = innerRef.current;
     if (!el) return;
     el.style.transition = 'transform 0.5s cubic-bezier(0.33, 1, 0.68, 1)';
     el.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)';
-  }, []);
+  }, [disableTilt]);
 
   return (
     <div
       ref={innerRef}
       className="h-full rounded-3xl overflow-hidden shadow-2xl shadow-black/30"
-      style={{ transformStyle: 'preserve-3d' }}
-
+      style={{
+        transformStyle: 'preserve-3d',
+        transition: 'transform 0.5s cubic-bezier(0.33, 1, 0.68, 1)',
+      }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
@@ -168,7 +172,7 @@ function MobileCards({ services: svcList, isVisible }: { services: (typeof servi
       >
         {svcList.map((service) => (
           <div key={service.heading} className="w-[280px] sm:w-[300px] h-[370px] shrink-0 snap-center">
-            <CylinderCard service={service} />
+            <CylinderCard service={service} disableTilt />
           </div>
         ))}
       </div>
