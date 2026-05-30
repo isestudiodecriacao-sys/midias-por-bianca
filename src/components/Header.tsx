@@ -1,16 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Camera, Menu, X } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
 
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { dark, toggle } = useTheme();
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 50);
+
+      // Hide on scroll down, show on scroll up (only after passing hero area)
+      if (y > 100) {
+        setHidden(y > lastScrollY.current && y - lastScrollY.current > 5);
+      } else {
+        setHidden(false);
+      }
+      lastScrollY.current = y;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -28,7 +41,7 @@ export function Header() {
       <header
         className={`fixed top-0 left-0 right-0 z-50 px-6 py-5 transition-all duration-500 ${
           scrolled ? 'bg-white/90 dark:bg-[#111]/90 glass shadow-[0_2px_20px_rgba(0,0,0,0.06)]' : ''
-        }`}
+        } ${hidden && !mobileOpen ? '-translate-y-full' : 'translate-y-0'}`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           <a
